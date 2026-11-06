@@ -1,23 +1,36 @@
-# 燒肉新訓日記 (架構版)
+# 燒肉新訓日記
+
+手機網頁 PWA 像素遊戲。純 HTML5 Canvas + JS,不需要任何建置工具。
 
 ## 執行
-    python3 -m http.server 8000      # 然後手機/電腦開 http://<IP>:8000
+    python3 -m http.server 8000      # 手機/電腦開 http://<IP>:8000
+    # 網址加 ?dev 會出現「關卡選擇」,可直接測試任一小遊戲(不扣能量、不影響存檔)
+    # 正式版在標題畫面點標題 5 下也能進入
+
+## 小遊戲
+| id | 名稱 | 玩法 | 燒肉能量效果 |
+|---|---|---|---|
+| sortWaste | 廚餘分裝 | 點正確的桶子分類掉落物 | 時間變慢 6 秒 |
+| prepFood | 伙房備菜 | 點擊下刀,切出目標寬度 | 顯示下刀輔助線 |
+| foldBlanket | 折棉被 | 記住班長示範的順序滑動 → 點掉凸起 | 顯示折法 / 壓平 4 處 |
+| cadence | 答數 | 節奏 + 記憶,照班長喊的拍子答 | 顯示答數提示 |
+| shoot | 打靶 | 按住閉氣穩準星,放開射擊 | 晃動減半 |
+| grenade | 丟手榴彈 | 滑動拉插銷 → 拖曳投擲 → 臥倒 | 顯示拋物線 |
+| (假日) | 烤肉 | 肉片金色發光時點擊 | 補充能量 |
 
 ## 結構
-- `js/data/levels.js`   ← 整個遊戲流程(直線式),改關卡只動這裡
-- `js/minigames/`       ← 每個小遊戲一個檔案,格式見 base.js,到 index.js 註冊
-- `js/core/state.js`    ← 能量、進度、旗標、數值設定 (CONFIG)
-- `js/core/assets.js`   ← 素材登記,放 png 到 assets/sprites 再登記
-- `js/scenes/`          ← 標題/劇情/小遊戲包裝/假日/結局
+- `js/data/levels.js`    整個遊戲流程(直線式),改關卡/台詞只動這裡
+- `js/data/sprites.js`   角色像素圖(之後可換成自己的 png)
+- `js/minigames/`        每個小遊戲一個檔案,格式見 `base.js`,到 `index.js` 註冊
+- `js/core/fx.js`        特效:粒子、火花、彩帶、煙、震動、閃光、衝擊波、飄字、命中停頓
+- `js/core/audio.js`     8-bit 合成音效(不需音檔)
+- `js/core/state.js`     能量、進度、數值設定 (CONFIG)
+- `js/core/engine.js`    高解析度畫布(依手機螢幕像素繪製)、長螢幕自動延伸、轉場
+- `js/scenes/`           標題 / 劇情 / 小遊戲外框 / 假日 / 結局 / 開發選單
 
-## 新增一個小遊戲
-1. 複製 `minigames/timing.js` 改名並改 id
-2. 在 `minigames/index.js` 加一行 import 與陣列項目
-3. 在 `levels.js` 加 `{ type:'minigame', game:'你的id', params:{...} }`
+邏輯解析度固定 360×640,所有座標以此為準;實際會依手機解析度清晰繪製。
 
-## PWA
-- `manifest.webmanifest` 安裝資訊、`sw.js` 離線快取、`icons/` 圖示。
-- **改了任何程式/素材後,把 `sw.js` 的 `VERSION` 加 1**,否則同袍會一直看到舊版。
-- 新增 js 檔時,記得加進 `sw.js` 的 `CORE` 清單(素材 png 會自動快取)。
-- PWA 需要 HTTPS(或 localhost)才能安裝,正式發佈用 GitHub Pages / Netlify 即可。
-- 安裝方式:iPhone Safari →「分享」→「加入主畫面」;Android Chrome → 選單 →「安裝應用程式」。
+## 發佈 / 更新
+1. 改完任何檔案後執行 `python3 tools/build_sw.py`(更新離線快取清單與版本號,否則玩家會看到舊版)
+2. 上傳到 GitHub Pages / Netlify(PWA 需要 HTTPS)
+3. iPhone Safari →「分享」→「加入主畫面」;Android Chrome →「安裝應用程式」
