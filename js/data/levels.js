@@ -21,7 +21,9 @@ export const LEVELS = [
   { id: 'prep', type: 'minigame', game: 'prepFood' },
   { id: 'w1', type: 'weekend', title: '第一次放假', text: '終於放假!衝去吃燒肉補充能量!' },
   { id: 's3', type: 'story', title: '第二週', lines: [
-    { who: '班長', text: '棉被要折成豆腐乾!我只示範一次,看清楚!' },
+    { who: '班長', text: '棉被要折成豆腐乾!照國軍的折法來,我一個口令一個動作!' },
+    { who: '班長', text: '鋪平拉撐、縱向三折、兩端往中間折留一個手掌、對折,最後壓實、捏線、捏角!' },
+    { who: '你', text: '(這比期末考還難……)' },
   ]},
   { id: 'blanket', type: 'minigame', game: 'foldBlanket' },
   { id: 's4', type: 'story', title: '基本教練', lines: [
