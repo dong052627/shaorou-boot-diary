@@ -1,5 +1,5 @@
 // Service Worker:離線快取。改完任何檔案後執行 python3 tools/build_sw.py,會自動更新清單與版本號。
-const VERSION = '20261106-100733';
+const VERSION = '20261108-020359';
 const CACHE = 'shaorou-' + VERSION;
 const CORE = [
   './',
