@@ -34,6 +34,7 @@ export class MinigameScene {
     this.okBtn = { x: 90, y: 420, w: 180, h: 52 };
     this.retryBtn = { x: 90, y: 412, w: 180, h: 50 };
     this.backBtn = { x: 110, y: 474, w: 140, h: 40 };
+    this.introBack = { x: 120, y: 562, w: 120, h: 38 };
   }
   canEnergy() { return this.level.canUseEnergy !== false && !this.energyUsed && State.energy > 0 && !this.result && this.phase === 'play'; }
   update(dt) {
@@ -49,12 +50,13 @@ export class MinigameScene {
     }
   }
   onPointerDown(p) {
-    if (this.phase === 'intro') { if (hit(p, this.startBtn)) { this.phase = 'play'; Sound.good(); } return; }
+    const exit = () => { Sound.tap(); (this.opts.onExit ?? this.done)(); };
+    if (this.phase === 'intro') { if (hit(p, this.startBtn)) { this.phase = 'play'; Sound.good(); } else if (hit(p, this.introBack)) exit(); return; }
     if (this.result) {
       if (this.resT < 0.8) return;
       if (this.result === 'win' && hit(p, this.okBtn)) this.done();
       if (this.result === 'lose' && hit(p, this.retryBtn)) { this.build(); Sound.tap(); }
-      if (this.result === 'lose' && this.opts.dev && hit(p, this.backBtn)) this.done();
+      if (this.result === 'lose' && hit(p, this.backBtn)) exit();
       return;
     }
     if (this.canEnergy() && hit(p, this.energyBtn)) {
@@ -110,6 +112,7 @@ export class MinigameScene {
     }
     button(g, this.startBtn, '開始!', { pulse: true, t: this.t, size: 22 });
     g.restore();
+    if (this.introT > 0.3) button(g, this.introBack, '◀ 返回', { color: '#9aa4ad', size: 15 });
   }
   renderResult(g) {
     const k = easeBack((this.resT - 0.4) / 0.4), win = this.result === 'win';
@@ -129,7 +132,7 @@ export class MinigameScene {
       wrapText(g, this.reason || '再試一次吧!', 60, 310, W - 120, 26, { size: 16, color: '#ffd0c8' });
       if (this.resT > 0.8) {
         button(g, this.retryBtn, '再來一次', { t: this.t, pulse: true });
-        if (this.opts.dev) button(g, this.backBtn, '返回選單', { color: '#9aa4ad', size: 15 });
+        button(g, this.backBtn, '回關卡選擇', { color: '#9aa4ad', size: 15 });
       }
     }
     g.restore();

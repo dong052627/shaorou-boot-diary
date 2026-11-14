@@ -18,7 +18,7 @@ function drawGrenade(g, x, y, s, rot = 0, pin = true) {
 }
 
 export default {
-  id: 'grenade', title: '丟手榴彈',
+  id: 'grenade', icon: '💣', title: '丟手榴彈',
   howto: ['口令:拉插銷 → 投擲 → 臥倒!', '先在螢幕上滑一下,拉掉插銷。', '往左下拖曳瞄準(拉越長越遠),放開投擲。', '丟出去後 1 秒內按「臥倒」!3 投要成功 2 次。'],
   energyHint: '燒肉瞄準:顯示拋物線',
   defaults: { throws: 3, need: 2, targets: [180, 240, 296], zone: 26 },

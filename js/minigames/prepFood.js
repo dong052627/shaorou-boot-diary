@@ -13,7 +13,7 @@ const VEGS = [
 const QCOL = ['#ff5a4d', '#7ee35a', '#ffd24a'];
 
 export default {
-  id: 'prepFood', title: '伙房備菜',
+  id: 'prepFood', icon: '🔪', title: '伙房備菜',
   howto: ['被抓去伙房支援,五百人份的菜等你切!', '蔬菜會往左移動,點螢幕就下刀。', '每片寬度越接近上方「目標寬度」越好。', '切得好的片數要達六成。'],
   energyHint: '燒肉刀工:顯示下刀輔助線(2 根菜)',
   defaults: { vegs: 3, width: 26, speed: 56, speedUp: 16, pass: 0.6 },

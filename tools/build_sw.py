@@ -4,6 +4,9 @@ import os, re, time
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SKIP_DIRS = {'.git', 'tools'}
 SKIP_FILES = {'sw.js', 'README.md'}
+version = time.strftime('%Y%m%d-%H%M%S')
+with open(os.path.join(ROOT, 'js', 'version.js'), 'w', encoding='utf-8') as f:   # 遊戲標題畫面會顯示這個版本號
+    f.write(f"// 由 tools/build_sw.py 自動產生,請勿手動修改\nexport const VERSION = '{version}';\n")
 files = ['./']
 for d, dirs, fs in os.walk(ROOT):
     dirs[:] = sorted(x for x in dirs if x not in SKIP_DIRS)
@@ -13,7 +16,7 @@ for d, dirs, fs in os.walk(ROOT):
             continue
         files.append('./' + rel)
 p = os.path.join(ROOT, 'sw.js'); s = open(p, encoding='utf-8').read()
-s = re.sub(r"const VERSION = '[^']*';", f"const VERSION = '{time.strftime('%Y%m%d-%H%M%S')}';", s)
+s = re.sub(r"const VERSION = '[^']*';", f"const VERSION = '{version}';", s)
 s = re.sub(r"const CORE = \[[\s\S]*?\];", 'const CORE = [\n' + ''.join(f"  '{f}',\n" for f in files) + '];', s)
 open(p, 'w', encoding='utf-8').write(s)
 print(f'sw.js 已更新:{len(files)} 個檔案')

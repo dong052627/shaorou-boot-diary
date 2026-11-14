@@ -31,7 +31,7 @@ const segDist = (px, py, x1, y1, x2, y2) => {
 };
 
 export default {
-  id: 'foldBlanket', title: '折棉被',
+  id: 'foldBlanket', icon: '🛏️', title: '折棉被',
   howto: [
     '照國軍正統「豆腐乾」折法,跟著班長口令做:',
     '鋪平拉撐 → 縱向三折 → 兩端往中間折(留一個手掌)→ 對折',

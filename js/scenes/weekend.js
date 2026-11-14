@@ -19,6 +19,7 @@ export class WeekendScene {
     this.smokeT = 0;
   }
   give(n, x, y) {
+    if (this.opts.replay) { FX.float(x, y - 30, '重溫美味', { color: COLOR.accent2, size: 20 }); return; }
     const before = State.energy; State.addEnergy(n); const got = State.energy - before; this.gained += got;
     if (got > 0) {
       FX.float(x, y - 30, `能量 +${got}`, { color: COLOR.accent2, size: 26 });
@@ -109,12 +110,12 @@ export class WeekendScene {
       panel(g, 30, 180, W - 60, 440, { fill: '#2a1810', edge: COLOR.accent });
       if (this.phase === 'intro') {
         text(g, this.level.title, W / 2, 226, { size: 32, align: 'center', base: 'middle', color: COLOR.accent2, outline: COLOR.ink, ow: 6, glow: '#ff7a3d' });
-        wrapText(g, this.level.text + '\n\n放假先補 1 格能量。\n烤肉時在「金色發光」的瞬間點肉,每片完美熟度再 +1!', 56, 270, W - 112, 28, { size: 17 });
+        wrapText(g, this.level.text + (this.opts.replay ? '\n\n(重溫假日:能量只有第一次放假會補)' : '\n\n放假先補 1 格能量。\n烤肉時在「金色發光」的瞬間點肉,每片完美熟度再 +1!'), 56, 270, W - 112, 28, { size: 17 });
         button(g, this.btn, '開烤!', { pulse: true, t });
       } else {
         text(g, '吃飽了!', W / 2, 226, { size: 34, align: 'center', base: 'middle', color: COLOR.gold, outline: COLOR.ink, ow: 6, glow: '#ffb347' });
         wrapText(g, `完美熟度 ${this.perfect} 片\n本次假日能量 +${this.gained}\n\n帶著滿滿的燒肉能量收假吧!`, 56, 280, W - 112, 30, { size: 18 });
-        if (this.pt > 0.6) button(g, this.btn, this.opts.dev ? '返回選單' : '收假回營', { pulse: true, t });
+        if (this.pt > 0.6) button(g, this.btn, '收假回營', { pulse: true, t });
       }
       g.restore();
     }

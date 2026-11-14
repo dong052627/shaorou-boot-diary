@@ -52,13 +52,15 @@ export class Engine {
       g.setTransform(S, 0, 0, S, 0, 0); g.clearRect(0, 0, W, this.fullH);
       g.setTransform(S, 0, 0, S, 0, oy * S); g.imageSmoothingEnabled = false;
       const [sx, sy] = FX.offset();
-      g.save(); g.translate(sx, sy); this.scene?.render?.(g); FX.render(g); g.restore();
-      if (oy > 0.5) {                                         // 上下延伸帶:拉伸遊戲區最邊緣的一列像素
+      g.save(); g.translate(sx, sy); this.scene?.render?.(g); g.restore();
+      if (oy > 0.5) {                                         // 上下延伸帶:拉伸遊戲區最邊緣的一列像素(在畫特效之前,粒子才不會被拉成直線)
         const c = this.canvas, top = Math.ceil(oy * S) + 1, bot = Math.floor((oy + H) * S) - 2, cw = c.width;
         g.setTransform(1, 0, 0, 1, 0, 0); g.imageSmoothingEnabled = true;
         g.drawImage(c, 0, top, cw, 1, 0, 0, cw, top);
         g.drawImage(c, 0, bot, cw, 1, 0, bot + 1, cw, c.height - bot - 1);
+        g.setTransform(S, 0, 0, S, 0, oy * S); g.imageSmoothingEnabled = false;
       }
+      g.save(); g.translate(sx, sy); FX.render(g); g.restore();
       g.setTransform(S, 0, 0, S, 0, 0);
       FX.renderOverlay(g, this.fullH);
       if (this.trans) this._renderTrans(g);

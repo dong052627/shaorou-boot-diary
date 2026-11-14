@@ -41,3 +41,14 @@ export const LEVELS = [
   { id: 'grenade', type: 'minigame', game: 'grenade' },
   { id: 'end', type: 'ending', title: '結訓', text: '新訓結束。你帶著滿滿的燒肉能量,邁向下一站。\n\n(待續)' },
 ];
+
+// 關卡選擇用的「關卡節點」:把劇情接到後面的小遊戲 / 假日 / 結局,自動組成。不用手動維護。
+export const NODES = (() => {
+  const nodes = []; let pre = [];
+  LEVELS.forEach((l, i) => {
+    if (l.type === 'story') { pre.push(l); return; }
+    nodes.push({ id: l.id, main: l, pre, index: nodes.length, levelIndex: i, subtitle: pre[0]?.title ?? '' });
+    pre = [];
+  });
+  return nodes;
+})();

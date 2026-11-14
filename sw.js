@@ -1,5 +1,5 @@
 // Service Worker:離線快取。改完任何檔案後執行 python3 tools/build_sw.py,會自動更新清單與版本號。
-const VERSION = '20261108-020359';
+const VERSION = '20261114-061438';
 const CACHE = 'shaorou-' + VERSION;
 const CORE = [
   './',
@@ -11,6 +11,7 @@ const CORE = [
   './icons/icon-512.png',
   './icons/maskable-512.png',
   './js/main.js',
+  './js/version.js',
   './js/core/assets.js',
   './js/core/audio.js',
   './js/core/engine.js',
@@ -31,17 +32,18 @@ const CORE = [
   './js/minigames/prepFood.js',
   './js/minigames/shoot.js',
   './js/minigames/sortWaste.js',
-  './js/scenes/dev.js',
   './js/scenes/ending.js',
   './js/scenes/flow.js',
   './js/scenes/minigame.js',
+  './js/scenes/select.js',
   './js/scenes/story.js',
   './js/scenes/title.js',
   './js/scenes/weekend.js',
 ];
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting()));
+  // cache: 'reload' = 略過瀏覽器的 HTTP 快取,確保抓到的是伺服器上最新的檔案
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE.map(u => new Request(u, { cache: 'reload' })))).then(() => self.skipWaiting()));
 });
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys()
