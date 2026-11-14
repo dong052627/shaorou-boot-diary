@@ -41,7 +41,7 @@ function drawItem(g, it, cx, cy, s = 1.8, rot = 0, label = true) {
 }
 
 export default {
-  id: 'sortWaste', title: '廚餘分裝',
+  id: 'sortWaste', icon: '🍚', title: '廚餘分裝',
   howto: ['餐後輪到你倒廚餘、收餐盤!', '東西掉下來時,點下方正確的桶子。', '有發光框的那個會先被分。', '分錯或掉到地上算失誤,錯 3 次失敗。'],
   energyHint: '燒肉專注:時間變慢 6 秒',
   defaults: { goal: 15, lives: 3, speed: 50, spawn: 1.6 },

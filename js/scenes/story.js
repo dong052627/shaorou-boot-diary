@@ -1,11 +1,11 @@
 import { W, H } from '../core/screen.js';
 import { Sound } from '../core/audio.js';
-import { text, wrapText, panel, fillRR, vgrad, vignette, ellipse, COLOR } from '../core/ui.js';
+import { text, wrapText, panel, fillRR, vgrad, vignette, ellipse, button, hit, COLOR } from '../core/ui.js';
 import { drawSprite, shadow } from '../core/sprite.js';
 import { PORTRAITS, SOLDIER } from '../data/sprites.js';
 
 export class StoryScene {
-  constructor(level, done) { this.level = level; this.done = done; this.i = 0; this.c = 0; this.t = 0; this.lt = 0; this.ended = false; }
+  constructor(level, done, opts = {}) { this.level = level; this.done = done; this.opts = opts; this.i = 0; this.c = 0; this.t = 0; this.lt = 0; this.ended = false; this.skipBtn = { x: 276, y: 26, w: 74, h: 34 }; }
   get line() { return this.level.lines[this.i]; }
   update(dt) {
     this.t += dt; this.lt += dt;
@@ -13,8 +13,9 @@ export class StoryScene {
     this.c = Math.min(this.line.text.length, this.c + dt * 34);
     if (Math.floor(this.c) !== before && before % 2 === 0) Sound.tone(this.line.who === '班長' ? 300 : 620, 0.03, 'square', 0.03);
   }
-  onPointerDown() {
+  onPointerDown(p) {
     if (this.ended) return;
+    if (hit(p, this.skipBtn)) { this.ended = true; Sound.tap(); (this.opts.onSkip ?? this.done)(); return; }
     if (this.c < this.line.text.length) { this.c = this.line.text.length; return; }
     if (this.i + 1 >= this.level.lines.length) { this.ended = true; this.done(); return; }
     this.i++; this.c = 0; this.lt = 0; Sound.tap();
@@ -42,5 +43,6 @@ export class StoryScene {
     wrapText(g, l.text, 32, 486, W - 64, 30, { size: 19, limit: Math.floor(this.c), color: l.who === '旁白' ? '#cfe0c4' : COLOR.fg });
     if (this.c >= l.text.length) text(g, '▼', W - 40, 594 + Math.sin(t * 6) * 3, { size: 16, color: COLOR.accent2 });
     vignette(g, 0.4);
+    button(g, this.skipBtn, '跳過 ▶▶', { color: '#9aa4ad', size: 13 });
   }
 }

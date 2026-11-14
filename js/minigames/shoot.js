@@ -5,7 +5,7 @@ import { Sound } from '../core/audio.js';
 import { FX } from '../core/fx.js';
 
 export default {
-  id: 'shoot', title: '打靶',
+  id: 'shoot', icon: '🎯', title: '打靶',
   howto: ['五發子彈,總分 30 分及格。', '準星會隨呼吸晃動。', '按住螢幕「閉氣」,準星會慢慢變穩。', '放開手指就擊發!閉氣太久會喘,準星反而亂晃。'],
   energyHint: '燒肉穩定:準星晃動減半',
   defaults: { shots: 5, pass: 30, sway: 46 },

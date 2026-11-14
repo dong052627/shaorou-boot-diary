@@ -9,7 +9,7 @@ import { FX } from '../core/fx.js';
 const NUM = ['一', '二', '三', '四'], FREQ = [392, 440, 494, 523];
 
 export default {
-  id: 'cadence', title: '答數',
+  id: 'cadence', icon: '📣', title: '答數',
   howto: ['班長喊什麼,你就照節拍答什麼!', '前 4 拍聽班長喊,後 4 拍輪到你。', '只在班長「有喊」的那幾拍點螢幕。', '搶拍、亂答、漏答都會扣分,正確率要七成。'],
   energyHint: '燒肉丹田:答數時顯示提示',
   defaults: { rounds: 6, bpm: 104, pass: 0.7 },
