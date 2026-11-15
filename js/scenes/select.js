@@ -20,7 +20,7 @@ export class LevelSelectScene {
     this.cards = NODES.map((n, i) => ({ n, i, x: 72, y: 104 + i * 56, w: 274, h: 48, shake: 0 }));
     this.back = { x: 10, y: 16, w: 52, h: 38 };
   }
-  isOpen(i) { return this.dev || i <= State.unlocked; }
+  isOpen(i) { return true; }   // 全部解鎖,同袍可自由選關
   shown(i) { return this.isOpen(i) && !(i === this.unlockedNow && this.ut < 0.5); }       // 剛解鎖的關卡先上鎖再解開
   info(n) {
     const m = n.main;
@@ -95,7 +95,7 @@ export class LevelSelectScene {
       else if (isCur) { fillRR(g, rx - 54, c.y + 12, 54, 24, 12, COLOR.accent); text(g, '出發 ▶', rx - 27, c.y + 24, { size: 13, align: 'center', base: 'middle', color: '#2a1408' }); }
       g.restore();
     }
-    text(g, this.dev ? '開發模式:全部解鎖、不扣能量、不存檔' : '點關卡開始;過關會解鎖下一關,已過的關卡可以重玩', W / 2, 616, { size: 11, align: 'center', color: COLOR.dim, weight: 'normal' });
+    text(g, this.dev ? '開發模式:全部解鎖、不扣能量、不存檔' : '點任何一關都能玩;過關會記錄打勾和星數', W / 2, 616, { size: 11, align: 'center', color: COLOR.dim, weight: 'normal' });
     vignette(g, 0.4);
   }
 }
